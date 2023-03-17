@@ -48,16 +48,31 @@
   <div class="container">
     <div class="input from">
       <label for="from">Morse</label>
-      <textarea name="from" id="from" cols="30" rows="10" v-model="fromText" @keypress="checkMorse"></textarea>
+      <textarea name="from" id="from" cols="40" rows="5" v-model="fromText" @keypress="checkMorse"></textarea>
     </div>
     <div class="input to">
       <label for="from">Text</label>
-      <textarea name="to" id="to" cols="30" rows="10" :value="toText"></textarea>
+      <textarea name="to" id="to" cols="40" rows="5" :value="toText"></textarea>
     </div>
   </div>
 </template>
 
 <style scoped>
+  .container {
+    width: 800px;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+  }
+
+  .container .input {
+    padding: 20px;
+  }
+
+  .container .input textarea {
+    
+  }
+
   .container .input label {
     display: block;
   }
