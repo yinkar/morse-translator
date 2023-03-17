@@ -32,7 +32,7 @@
   
   const fromText = ref('');
   const toText = computed(() => {
-    return fromText.value.replaceAll('_', '-').replaceAll('─', '-').split(' ').map(e => {
+    return fromText.value.replaceAll('_', '-').replaceAll('─', '-').replaceAll('\n', '').replaceAll('\r', '').split(' ').map(e => {
       if (typeof alphabet[e] === undefined || e === ' ') return '';
       return alphabet[e];
     }).join('');
@@ -67,10 +67,6 @@
 
   .container .input {
     padding: 20px;
-  }
-
-  .container .input textarea {
-    
   }
 
   .container .input label {
