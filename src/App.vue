@@ -117,6 +117,7 @@
   .panel {
     display: flex;
     justify-content: flex-start;
+    padding: 0 12px;
   }
 
   .container {
