@@ -1,55 +1,7 @@
 <script setup>
   import { computed, ref } from 'vue';
   import _ from 'lodash';
-
-  const alphabet = {
-    '.-': 'A',
-    '-...': 'B',
-    '-.-.': 'C',
-    '-..': 'D',
-    '.': 'E',
-    '..-.': 'F',
-    '--.': 'G',
-    '....': 'H',
-    '..': 'I',
-    '.---': 'J',
-    '-.-': 'K',
-    '.-..': 'L',
-    '--': 'M',
-    '-.': 'N',
-    '---': 'O',
-    '.--.': 'P',
-    '--.-': 'Q',
-    '.-.': 'R',
-    '...': 'S',
-    '-': 'T',
-    '..-': 'U',
-    '...-': 'V',
-    '.--': 'W',
-    '-..-': 'X',
-    '-.--': 'Y',
-    '--..': 'Z',
-    '.---': '1',
-    '..---': '2',
-    '...--': '3',
-    '....-': '4',
-    '.....': '5',
-    '-....': '6',
-    '--...': '7',
-    '---..': '8',
-    '----.': '9',
-    '-----': '0',
-    '..--..': '?',
-    '-.-.--': '!',
-    '.-.-.-': '.',
-    '--..--': ',',
-    '-.-.-.': ';',
-    '---...': ':',
-    '.-.-.': '+',
-    '-....-': '-',
-    '-..-.': '/',
-    '-...-': '=',
-  };
+  import alphabet from './assets/alphabet.json';
 
   const Mode = {
     TEXT_TO_MORSE: 0,
@@ -101,11 +53,11 @@
     <div class="panel">
       <div>
         <input type="radio" name="mode" id="text-to-morse" v-model="mode" :value="Mode.TEXT_TO_MORSE">
-        <label for="text-to-morse">Text to Morse</label>
+        <label for="text-to-morse">Text to Morse Code</label>
       </div>
       <div>
         <input type="radio" name="mode" id="morse-to-text" v-model="mode" :value="Mode.MORSE_TO_TEXT">
-        <label for="morse-to-text">Morse to Text</label>
+        <label for="morse-to-text">Morse Code to Text</label>
       </div>
     </div>
 
@@ -116,7 +68,7 @@
       </div>
       <div class="input to">
         <label for="toMorse">Morse</label>
-        <textarea name="toMorse" id="toMorse" cols="40" rows="5" :value="toMorse"></textarea>
+        <textarea name="toMorse" id="toMorse" cols="40" rows="5" :value="toMorse" readonly></textarea>
       </div>
     </div>
 
@@ -127,21 +79,21 @@
       </div>
       <div class="input to">
         <label for="toText">Text</label>
-        <textarea name="toText" id="toText" cols="40" rows="5" :value="toText"></textarea>
+        <textarea name="toText" id="toText" cols="40" rows="5" :value="toText" readonly></textarea>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+  .container {
+    margin: 0 auto;
+  }
+
   .panel {
     display: flex;
     justify-content: flex-start;
-    padding: 0 12px;
-  }
-
-  .container {
-    margin: 0 auto;
+    margin-bottom: 30px;
   }
 
   .input-container {
@@ -150,11 +102,41 @@
     justify-content: space-between;
   }
 
-  .input-container .input {
-    padding: 20px;
+  .panel input[type="radio"] {
+    opacity: 0;
+    position: fixed;
+    width: 0;
+  }
+
+  .panel label {
+    display: inline-block;
+    background-color: #ddd;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  .panel input[type="radio"]:checked + label {
+    background-color: #4a97fd;
+    color: #fff;
   }
 
   .input-container .input label {
     display: block;
+  }
+
+  @media screen and (max-width: 600px) {
+    .panel {
+      justify-content: center;
+      font-size: .75rem;
+    }
+
+    .input-container {
+      flex-direction: column;
+      width: 100vw;
+    }
+
+    .input {
+      text-align: center;
+    }
   }
 </style>
