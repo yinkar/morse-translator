@@ -69,14 +69,14 @@
         <textarea name="fromText" id="fromText" v-model="fromText"></textarea>
       </div>
       <div class="input to">
-        <label for="toMorse">Morse</label>
+        <label for="toMorse">Morse Code</label>
         <textarea name="toMorse" id="toMorse" :value="toMorse" readonly></textarea>
       </div>
     </div>
 
     <div class="input-container" v-if="mode === Mode.MORSE_TO_TEXT">
       <div class="input from">
-        <label for="fromMorse">Morse</label>
+        <label for="fromMorse">Morse Code</label>
         <textarea name="fromMorse" id="fromMorse" v-model="fromMorse" @keypress="checkMorse"></textarea>
       </div>
       <div class="input to">
