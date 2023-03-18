@@ -33,6 +33,8 @@
   const toMorse = computed(() => {
     return removeAccents(fromText.value)
       .toUpperCase()
+      .trim()
+      .replace(/[\s]+/g, ' ')
       .split('')
       .map(c => {
         if (typeof reverseAlphabet[c] === undefined) return '';
@@ -64,22 +66,22 @@
     <div class="input-container" v-if="mode === Mode.TEXT_TO_MORSE">
       <div class="input from">
         <label for="fromText">Text</label>
-        <textarea name="fromText" id="fromText" cols="40" rows="5" v-model="fromText"></textarea>
+        <textarea name="fromText" id="fromText" v-model="fromText"></textarea>
       </div>
       <div class="input to">
         <label for="toMorse">Morse</label>
-        <textarea name="toMorse" id="toMorse" cols="40" rows="5" :value="toMorse" readonly></textarea>
+        <textarea name="toMorse" id="toMorse" :value="toMorse" readonly></textarea>
       </div>
     </div>
 
     <div class="input-container" v-if="mode === Mode.MORSE_TO_TEXT">
       <div class="input from">
         <label for="fromMorse">Morse</label>
-        <textarea name="fromMorse" id="fromMorse" cols="40" rows="5" v-model="fromMorse" @keypress="checkMorse"></textarea>
+        <textarea name="fromMorse" id="fromMorse" v-model="fromMorse" @keypress="checkMorse"></textarea>
       </div>
       <div class="input to">
         <label for="toText">Text</label>
-        <textarea name="toText" id="toText" cols="40" rows="5" :value="toText" readonly></textarea>
+        <textarea name="toText" id="toText" :value="toText" readonly></textarea>
       </div>
     </div>
   </div>
@@ -92,14 +94,13 @@
 
   .panel {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     margin-bottom: 30px;
+    width: 100%;
   }
 
-  .input-container {
-    width: 800px;
-    display: flex;
-    justify-content: space-between;
+  .panel > div {
+    width: 200px;
   }
 
   .panel input[type="radio"] {
@@ -110,24 +111,50 @@
 
   .panel label {
     display: inline-block;
-    background-color: #ddd;
     padding: 10px 20px;
     cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
   }
 
   .panel input[type="radio"]:checked + label {
-    background-color: #4a97fd;
+    background-color: #ddd;
+    color: #333;
+    border-radius: 15px;
+  }
+
+  .input-container {
+    width: 800px;
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+  }
+
+  .input-container textarea {
+    background-color: #333;
     color: #fff;
+    font-size: 1.1rem;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 390px;
+    height: 100px;
+    outline: #333;
+    border-radius: 20px;
   }
 
   .input-container .input label {
     display: block;
+    margin-bottom: 10px;
   }
 
   @media screen and (max-width: 600px) {
     .panel {
       justify-content: center;
       font-size: .75rem;
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .input-container {
@@ -137,6 +164,10 @@
 
     .input {
       text-align: center;
+    }
+
+    .input:first-child {
+      margin-bottom: 30px;
     }
   }
 </style>
