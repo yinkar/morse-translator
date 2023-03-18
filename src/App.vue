@@ -70,14 +70,14 @@
       </div>
       <div class="input to">
         <label for="toMorse">Morse Code</label>
-        <textarea name="toMorse" id="toMorse" :value="toMorse" readonly></textarea>
+        <textarea class="monospace" name="toMorse" id="toMorse" :value="toMorse" readonly></textarea>
       </div>
     </div>
 
     <div class="input-container" v-if="mode === Mode.MORSE_TO_TEXT">
       <div class="input from">
         <label for="fromMorse">Morse Code</label>
-        <textarea name="fromMorse" id="fromMorse" v-model="fromMorse" @keypress="checkMorse"></textarea>
+        <textarea class="monospace" name="fromMorse" id="fromMorse" v-model="fromMorse" @keypress="checkMorse"></textarea>
       </div>
       <div class="input to">
         <label for="toText">Text</label>
@@ -141,6 +141,10 @@
     height: 100px;
     outline: #333;
     border-radius: 20px;
+  }
+
+  .input-container textarea.monospace {
+    font-family: monospace;
   }
 
   .input-container .input label {
