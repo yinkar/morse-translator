@@ -32,12 +32,14 @@
   };
 
   const reverseAlphabet = _.invert(alphabet);
+
+  const removeAccents = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   
   const fromMorse = ref('');
   const toText = computed(() => {
     return fromMorse.value
-      .replaceAll(/[_─]/g, '-')
-      .replaceAll(/[^\.\-_\s─\/]|[\n]*/gi, '')
+      .replace(/[_─]/g, '-')
+      .replace(/[^\.\-_\s─\/]|[\n]*/g, '')
       .split('/')
       .map(w => {
         return w.split(' ')
@@ -50,7 +52,7 @@
 
   const fromText = ref('');
   const toMorse = computed(() => {
-    return fromText.value
+    return removeAccents(fromText.value)
       .toUpperCase()
       .split('')
       .map(c => {
