@@ -31,6 +31,13 @@
     '--..': 'Z',
   };
 
+  const Mode = {
+    TEXT_TO_MORSE: 0,
+    MORSE_TO_TEXT: 1
+  };
+
+  const mode = ref(Mode.TEXT_TO_MORSE);
+
   const reverseAlphabet = _.invert(alphabet);
 
   const removeAccents = str => str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -66,51 +73,67 @@
   function checkMorse(e) {
     if (/[\.\-_\s─\/]+/.test(String.fromCharCode(e.keyCode))) return true;
     e.preventDefault();
-    return false;
-  }
-
-  function checkAlpha() {
-    return true;
   }
 </script>
 
 <template>
   <div class="container">
-    <div class="input from">
-      <label for="fromMorse">Morse</label>
-      <textarea name="fromMorse" id="fromMorse" cols="40" rows="5" v-model="fromMorse" @keypress="checkMorse"></textarea>
+    <div class="panel">
+      <div>
+        <input type="radio" name="mode" id="text-to-morse" v-model="mode" :value="Mode.TEXT_TO_MORSE">
+        <label for="text-to-morse">Text to Morse</label>
+      </div>
+      <div>
+        <input type="radio" name="mode" id="morse-to-text" v-model="mode" :value="Mode.MORSE_TO_TEXT">
+        <label for="morse-to-text">Morse to Text</label>
+      </div>
     </div>
-    <div class="input to">
-      <label for="toText">Text</label>
-      <textarea name="toText" id="toText" cols="40" rows="5" :value="toText"></textarea>
-    </div>
-  </div>
 
-  <div class="container">
-    <div class="input from">
-      <label for="fromText">Text</label>
-      <textarea name="fromText" id="fromText" cols="40" rows="5" v-model="fromText" @keypress="checkAlpha"></textarea>
+    <div class="input-container" v-if="mode === Mode.TEXT_TO_MORSE">
+      <div class="input from">
+        <label for="fromText">Text</label>
+        <textarea name="fromText" id="fromText" cols="40" rows="5" v-model="fromText"></textarea>
+      </div>
+      <div class="input to">
+        <label for="toMorse">Morse</label>
+        <textarea name="toMorse" id="toMorse" cols="40" rows="5" :value="toMorse"></textarea>
+      </div>
     </div>
-    <div class="input to">
-      <label for="toMorse">Morse</label>
-      <textarea name="toMorse" id="toMorse" cols="40" rows="5" :value="toMorse"></textarea>
+
+    <div class="input-container" v-if="mode === Mode.MORSE_TO_TEXT">
+      <div class="input from">
+        <label for="fromMorse">Morse</label>
+        <textarea name="fromMorse" id="fromMorse" cols="40" rows="5" v-model="fromMorse" @keypress="checkMorse"></textarea>
+      </div>
+      <div class="input to">
+        <label for="toText">Text</label>
+        <textarea name="toText" id="toText" cols="40" rows="5" :value="toText"></textarea>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-  .container {
-    width: 800px;
+  .panel {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+  }
+
+  .container {
     margin: 0 auto;
   }
 
-  .container .input {
+  .input-container {
+    width: 800px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .input-container .input {
     padding: 20px;
   }
 
-  .container .input label {
+  .input-container .input label {
     display: block;
   }
 </style>
