@@ -92,7 +92,7 @@
       <textarea name="fromText" id="fromText" cols="40" rows="5" v-model="fromText" @keypress="checkAlpha"></textarea>
     </div>
     <div class="input to">
-      <label for="toMorse">Text</label>
+      <label for="toMorse">Morse</label>
       <textarea name="toMorse" id="toMorse" cols="40" rows="5" :value="toMorse"></textarea>
     </div>
   </div>
