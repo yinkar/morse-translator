@@ -48,13 +48,68 @@
     if (/[\.\-_\s─\/]+/.test(String.fromCharCode(e.keyCode))) return true;
     e.preventDefault();
   }
+
+  const playing = ref(false);
+
+  function playMorseCode(code) {
+    const audioCtx = new AudioContext();
+
+    playing.value = true;
+
+    const playSound = (frequency, duration) => {
+      const oscillator = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      oscillator.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      gainNode.gain.value = 0.08;
+      oscillator.frequency.value = frequency;
+      oscillator.type = 'sine';
+      oscillator.start(audioCtx.currentTime);
+      oscillator.stop(audioCtx.currentTime + duration / 1000);
+    };
+
+    let i = 0;
+    let delay = 0;
+    const playSymbol = () => {
+      if (i >= code.length) {    
+        playing.value = false;
+        return;
+      };
+
+      if (code[i] === '.') playSound(440, 100);
+      else if (code[i] === '-') playSound(440, 300);
+      else if (code[i] === '/') delay += 400;
+      
+      i++;
+
+      if (i > 0 && code[i - 1] === '.') {
+        setTimeout(playSymbol, delay + 200);
+      }
+      else {
+        setTimeout(playSymbol, delay + 350);
+      }
+
+      delay = 0;
+    };
+    
+    setTimeout(playSymbol, delay + 300);
+  }
+
+  function play() {
+    if (mode.value === Mode.MORSE_TO_TEXT) {
+      playMorseCode(fromMorse.value.replaceAll('_', '-').trim().replace(/[\s]+/g, ' '));
+    }
+    else if (mode.value === Mode.TEXT_TO_MORSE) {
+      playMorseCode(toMorse.value);
+    }
+  }
 </script>
 
 <template>
   <div class="container">
     <div class="switch-panel">
       <div>
-        <input type="radio" name="mode" id="text-to-morse" v-model="mode" :value="Mode.TEXT_TO_MORSE">
+        <input @click="play('... --- ...')" type="radio" name="mode" id="text-to-morse" v-model="mode" :value="Mode.TEXT_TO_MORSE">
         <label for="text-to-morse">Text to Morse Code</label>
       </div>
       <div>
@@ -84,6 +139,19 @@
         <textarea name="toText" id="toText" :value="toText" readonly></textarea>
       </div>
     </div>
+  </div>
+
+  <div class="play-panel">
+    <button @click="play" class="play-button" :class="{ playing }">
+
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g id="play" clip-path="url(#clip0_2_2)">
+      <path id="core" d="M12 3.95799C7.581 3.95799 4 7.54699 4 11.975C4 16.403 7.581 19.992 12 19.992C16.419 19.992 20 16.403 20 11.975C20 7.54699 16.419 3.95799 12 3.95799ZM10 14.981V8.96799L16 12.12L10 14.981Z" fill="#888"/>
+      <path id="ring" d="M13 2.004C18.046 2.508 22 6.787 22 11.974C22 13.441 21.676 14.83 21.108 16.087L22.846 17.092C23.578 15.539 24 13.808 24 11.975C24 5.671 19.158 0.511 13 0V2.004ZM2.891 16.087C2.323 14.83 2 13.441 2 11.975C2 6.787 5.954 2.509 11 2.005V0C4.842 0.511 0 5.671 0 11.975C0 13.808 0.421 15.538 1.153 17.093L2.891 16.087ZM20.104 17.821C18.287 20.344 15.335 21.995 12 21.995C8.665 21.995 5.712 20.344 3.895 17.82L2.149 18.83C4.316 21.953 7.917 24 12 24C16.082 24 19.683 21.953 21.851 18.832L20.104 17.821Z" fill="#aaa"/>
+      </g>
+      </svg>
+      
+    </button>
   </div>
 </template>
 
@@ -151,6 +219,39 @@
   .input label, .output label {
     display: block;
     margin-bottom: 10px;
+  }
+
+  .play-panel {
+    margin: 0 auto;
+    width: 30px;
+  }
+
+  .play-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .play-button:hover svg {
+    filter: brightness(1.2);
+  }
+
+  .play-button #ring {
+    transform-origin: center center;
+  }
+
+  .play-button.playing #ring {
+    animation: playing 1s linear infinite;
+    fill: #ddd;
+  }
+
+  @keyframes playing {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 
   @media screen and (max-width: 600px) {
