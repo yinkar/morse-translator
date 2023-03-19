@@ -52,7 +52,7 @@
 
 <template>
   <div class="container">
-    <div class="panel">
+    <div class="switch-panel">
       <div>
         <input type="radio" name="mode" id="text-to-morse" v-model="mode" :value="Mode.TEXT_TO_MORSE">
         <label for="text-to-morse">Text to Morse Code</label>
@@ -63,23 +63,23 @@
       </div>
     </div>
 
-    <div class="input-container" v-if="mode === Mode.TEXT_TO_MORSE">
-      <div class="input from">
+    <div class="panel" v-if="mode === Mode.TEXT_TO_MORSE">
+      <div class="input">
         <label for="fromText">Text</label>
         <textarea name="fromText" id="fromText" v-model="fromText"></textarea>
       </div>
-      <div class="input to">
+      <div class="output">
         <label for="toMorse">Morse Code</label>
-        <textarea class="monospace" name="toMorse" id="toMorse" :value="toMorse" readonly></textarea>
+        <textarea class="morse-output" name="toMorse" id="toMorse" :value="toMorse" readonly></textarea>
       </div>
     </div>
 
-    <div class="input-container" v-if="mode === Mode.MORSE_TO_TEXT">
-      <div class="input from">
+    <div class="panel" v-if="mode === Mode.MORSE_TO_TEXT">
+      <div class="input">
         <label for="fromMorse">Morse Code</label>
-        <textarea class="monospace" name="fromMorse" id="fromMorse" v-model="fromMorse" @keypress="checkMorse"></textarea>
+        <textarea class="morse-output" name="fromMorse" id="fromMorse" v-model="fromMorse" @keypress="checkMorse"></textarea>
       </div>
-      <div class="input to">
+      <div class="output">
         <label for="toText">Text</label>
         <textarea name="toText" id="toText" :value="toText" readonly></textarea>
       </div>
@@ -92,24 +92,24 @@
     margin: 0 auto;
   }
 
-  .panel {
+  .switch-panel {
     display: flex;
     justify-content: center;
     margin-bottom: 30px;
     width: 100%;
   }
 
-  .panel > div {
+  .switch-panel > div {
     width: 200px;
   }
 
-  .panel input[type="radio"] {
+  .switch-panel input[type="radio"] {
     opacity: 0;
     position: fixed;
     width: 0;
   }
 
-  .panel label {
+  .switch-panel label {
     display: inline-block;
     padding: 10px 20px;
     cursor: pointer;
@@ -118,20 +118,20 @@
     text-align: center;
   }
 
-  .panel input[type="radio"]:checked + label {
+  .switch-panel input[type="radio"]:checked + label {
     background-color: #ddd;
     color: #333;
     border-radius: 15px;
   }
 
-  .input-container {
+  .panel {
     width: 800px;
     display: flex;
     justify-content: space-between;
     text-align: center;
   }
 
-  .input-container textarea {
+  .panel textarea {
     background-color: #333;
     color: #fff;
     font-size: 1.1rem;
@@ -143,17 +143,18 @@
     border-radius: 20px;
   }
 
-  .input-container textarea.monospace {
+  .panel textarea.morse-output {
     font-family: monospace;
+    font-weight: bolder;
   }
 
-  .input-container .input label {
+  .input label, .output label {
     display: block;
     margin-bottom: 10px;
   }
 
   @media screen and (max-width: 600px) {
-    .panel {
+    .switch-panel {
       justify-content: center;
       font-size: .75rem;
       width: 300px;
@@ -161,12 +162,12 @@
       margin-right: auto;
     }
 
-    .input-container {
+    .panel {
       flex-direction: column;
       width: 100vw;
     }
 
-    .input {
+    .input, .output {
       text-align: center;
     }
 
