@@ -240,10 +240,18 @@
 
   .play-button #ring {
     transform-origin: center center;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-delay: 0s;
+    animation-iteration-count: infinite;
+    animation-direction: normal;
+    animation-fill-mode: none;
+    animation-name: playing;
+    animation-play-state: paused;
   }
 
   .play-button.playing #ring {
-    animation: playing 1s linear infinite;
+    animation-play-state: running;
     fill: #ddd;
   }
 
