@@ -98,6 +98,11 @@
   }
 
   function play() {
+    if (playing.value) {
+      playing.value = false;
+      return;
+    }
+
     if (mode.value === Mode.MORSE_TO_TEXT) {
       playMorseCode(fromMorse.value.replaceAll('_', '-').trim().replace(/[\s]+/g, ' '));
     }
@@ -111,7 +116,7 @@
   <div class="container">
     <div class="switch-panel">
       <div>
-        <input @click="play('... --- ...')" type="radio" name="mode" id="text-to-morse" v-model="mode" :value="Mode.TEXT_TO_MORSE">
+        <input @click="play" type="radio" name="mode" id="text-to-morse" v-model="mode" :value="Mode.TEXT_TO_MORSE">
         <label for="text-to-morse">Text to Morse Code</label>
       </div>
       <div>
@@ -144,7 +149,7 @@
   </div>
 
   <div class="play-panel">
-    <button @click="play" class="play-button" :class="{ playing }" :disabled="playing">
+    <button @click="play" class="play-button" :class="{ playing }">
 
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g id="play" clip-path="url(#clip0_2_2)">
