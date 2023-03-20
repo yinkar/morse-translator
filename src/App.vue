@@ -71,6 +71,8 @@
     let i = 0;
     let delay = 0;
     const playSymbol = () => {
+      if (!playing.value) return;
+
       if (i >= code.length) {    
         playing.value = false;
         return;
@@ -142,7 +144,7 @@
   </div>
 
   <div class="play-panel">
-    <button @click="play" class="play-button" :class="{ playing }">
+    <button @click="play" class="play-button" :class="{ playing }" :disabled="playing">
 
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g id="play" clip-path="url(#clip0_2_2)">
