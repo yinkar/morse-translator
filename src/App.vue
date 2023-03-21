@@ -1,5 +1,5 @@
 <script setup>
-  import { computed, ref } from 'vue';
+  import { computed, ref, watchEffect } from 'vue';
   import _ from 'lodash';
   import alphabet from './assets/alphabet.json';
 
@@ -110,13 +110,22 @@
       playMorseCode(toMorse.value);
     }
   }
+
+  watchEffect(() => {
+    if (mode.value === Mode.MORSE_TO_TEXT) {
+      fromMorse.value = toMorse.value;
+    }
+    else if (mode.value === Mode.TEXT_TO_MORSE) {
+      fromText.value = toText.value;
+    }
+  });
 </script>
 
 <template>
   <div class="container">
     <div class="switch-panel">
       <div>
-        <input @click="play" type="radio" name="mode" id="text-to-morse" v-model="mode" :value="Mode.TEXT_TO_MORSE">
+        <input type="radio" name="mode" id="text-to-morse" v-model="mode" :value="Mode.TEXT_TO_MORSE">
         <label for="text-to-morse">Text to Morse Code</label>
       </div>
       <div>
@@ -289,6 +298,10 @@
 
     .input:first-child {
       margin-bottom: 30px;
+    }
+
+    .play-panel {
+      margin-top: 20px;
     }
   }
 </style>
