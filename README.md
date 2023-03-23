@@ -1,6 +1,6 @@
 # Morse Translator
 
-Morse code to Latin and Latin to Morse code convertor and player.
+Morse code to Latin and Latin to Morse code converter and player.
 
 ![Screenshot](screenshot.png)
 
